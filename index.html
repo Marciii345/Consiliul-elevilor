@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consiliul Elevilor CUTM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Welcome Banner -->
+    <div class="welcome-banner" id="welcomeBanner">
+        <div class="welcome-text">
+            Bine ai venit pe platforma Consiliului Elevilor! Autentifică-te pentru a accesa toate funcționalitățile.
+        </div>
+        <button id="showLoginBtn">Autentifică-te</button>
+        <button class="close-banner" id="closeBannerBtn">&times;</button>
+    </div>
+
+    <!-- Authentication Modal -->
+    <div class="modal-overlay" id="authModal">
+        <div class="auth-modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">Bine ai venit!</h2>
+                <p id="modalSubtitle">Accesează platforma Consiliului Elevilor</p>
+                <button class="close-modal" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="modal-tabs">
+                <button class="tab-btn active" id="loginTab">Autentificare</button>
+                <button class="tab-btn" id="registerTab">Înregistrare</button>
+            </div>
+            <div class="modal-body">
+                <!-- Login Form -->
+                <form id="loginForm" style="display: block;">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" placeholder="exemplu@email.com" required>
+                        <div class="error-msg" id="loginEmailError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Parolă</label>
+                        <input type="password" id="loginPassword" placeholder="Introdu parola" required>
+                        <div class="error-msg" id="loginPasswordError"></div>
+                    </div>
+                    <div class="error-msg" id="loginGeneralError"></div>
+                    <div class="form-footer">
+                        <div>
+                            <input type="checkbox" id="remember" checked>
+                            <label for="remember">Ține-mă minte</label>
+                        </div>
+                        <a href="#" id="forgotPassword">Ai uitat parola?</a>
+                    </div>
+                    <div class="spinner" id="loginSpinner"></div>
+                    <button type="submit" class="btn" style="width: 100%; margin-top: 1.5rem;" id="loginSubmitBtn">Autentifică-te</button>
+                    
+                    <div class="social-login">
+                        <p>sau continuă cu</p>
+                        <div class="social-buttons">
+                            <button class="social-btn facebook" id="facebookLogin">
+                                <i class="fab fa-facebook-f"></i>
+                            </button>
+                            <button class="social-btn google" id="googleLogin">
+                                <i class="fab fa-google"></i>
+                            </button>
+                            <button class="social-btn github" id="githubLogin">
+                                <i class="fab fa-github"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                
+                <!-- Registration Form -->
+                <form id="registerForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="fullName">Nume complet</label>
+                        <input type="text" id="fullName" placeholder="Nume Prenume" required>
+                        <div class="error-msg" id="fullNameError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="exemplu@email.com" required>
+                        <div class="error-msg" id="emailError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Număr de telefon</label>
+                        <input type="tel" id="phone" placeholder="+37369123456" required>
+                        <div class="error-msg" id="phoneError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="group">Grupa</label>
+                        <select id="group" required>
+    <!-- Anul 251 -->
+    <option value="PTPP-251">PTPP-251</option>
+    <option value="DAW-251">DAW-251</option>
+    <option value="RC-251">RC-251</option>
+    <option value="C-251">C-251</option>
+    <option value="TRT-251">TRT-251</option>
+    <option value="DTTA-251">DTTA-251</option>
+    <option value="TA-251">TA-251</option>
+    <option value="TAP-251">TAP-251</option>
+    <option value="MSP-251">MSP-251</option>
+    <option value="UTIA-251">UTIA-251</option>
+    <option value="TPM-251">TPM-251</option>
+    <option value="TPM-251(dual)">TPM-251 (dual)</option>
+    <option value="DTTA-251(dual)">DTTA-251 (dual)</option>
+    <option value="TAP-251(dual)">TAP-251 (dual)</option>
+
+    <!-- Anul 241 -->
+    <option value="PTPP-241">PTPP-241</option>
+    <option value="DAW-241">DAW-241</option>
+    <option value="RC-241">RC-241</option>
+    <option value="C-241">C-241</option>
+    <option value="TRT-241">TRT-241</option>
+    <option value="DTTA-241">DTTA-241</option>
+    <option value="TA-241">TA-241</option>
+    <option value="TAP-241">TAP-241</option>
+    <option value="MSP-241">MSP-241</option>
+    <option value="UTIA-241">UTIA-241</option>
+    <option value="TPM-241">TPM-241</option>
+    <option value="TPM-241(dual)">TPM-241 (dual)</option>
+    <option value="DTTA-241(dual)">DTTA-241 (dual)</option>
+    <option value="TAP-241(dual)">TAP-241 (dual)</option>
+
+    <!-- Anul 231 -->
+    <option value="PTPP-231">PTPP-231</option>
+    <option value="DAW-231">DAW-231</option>
+    <option value="RC-231">RC-231</option>
+    <option value="C-231">C-231</option>
+    <option value="TRT-231">TRT-231</option>
+    <option value="DTTA-231">DTTA-231</option>
+    <option value="TA-231">TA-231</option>
+    <option value="TAP-231">TAP-231</option>
+    <option value="MSP-231">MSP-231</option>
+    <option value="UTIA-231">UTIA-231</option>
+    <option value="TPM-231">TPM-231</option>
+    <option value="TPM-231(dual)">TPM-231 (dual)</option>
+    <option value="DTTA-231(dual)">DTTA-231 (dual)</option>
+    <option value="TAP-231(dual)">TAP-231 (dual)</option>
+
+    <!-- Anul 221 -->
+    <option value="PTPP-221">PTPP-221</option>
+    <option value="DAW-221">DAW-221</option>
+    <option value="RC-221">RC-221</option>
+    <option value="C-221">C-221</option>
+    <option value="TRT-221">TRT-221</option>
+    <option value="DTTA-221">DTTA-221</option>
+    <option value="TA-221">TA-221</option>
+    <option value="TAP-221">TAP-221</option>
+    <option value="MSP-221">MSP-221</option>
+    <option value="UTIA-221">UTIA-221</option>
+    <option value="TPM-221">TPM-221</option>
+    <option value="TPM-221(dual)">TPM-221 (dual)</option>
+    <option value="DTTA-221(dual)">DTTA-221 (dual)</option>
+    <option value="TAP-221(dual)">TAP-221 (dual)</option>
+</select>
+                        <div class="error-msg" id="groupError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Parolă</label>
+                        <input type="password" id="password" placeholder="Creează o parolă (minim 6 caractere)" required>
+                        <div class="error-msg" id="passwordError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirmă parola</label>
+                        <input type="password" id="confirmPassword" placeholder="Confirmă parola" required>
+                        <div class="error-msg" id="confirmPasswordError"></div>
+                    </div>
+                    <div class="error-msg" id="registerGeneralError"></div>
+                    <div class="success-msg" id="registerSuccessMsg"></div>
+                    <div class="spinner" id="registerSpinner"></div>
+                    <button type="submit" class="btn" style="width: 100%;" id="registerSubmitBtn">Înregistrează-te</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Profile Modal -->
+    <div class="profile-modal" id="profileModal">
+        <div class="profile-content">
+            <button class="close-modal" id="closeProfileBtn">&times;</button>
+            <div class="profile-header">
+                <div class="profile-avatar" id="profileAvatar">
+                    <i class="fas fa-camera"></i>
+                    <input type="file" id="profilePhotoInput" accept="image/*">
+                </div>
+                <div class="profile-info">
+                    <h2 id="profileName">Utilizator <i class="fas fa-check-circle verified-badge" id="verifiedBadge"></i></h2>
+                    <p id="profileGroup">Grupa: -</p>
+                    <p id="profileEmail">email@example.com</p>
+                    <p id="profileJoined">Membru din: -</p>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>Elevi în grupa ta</h4>
+                    <p id="sameGroupCount">0</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Evenimente participat</h4>
+                    <p id="eventsAttended">0</p>
+                </div>
+            </div>
+            
+            <div class="profile-form">
+                <label for="userBio">Despre mine</label>
+                <textarea id="userBio" placeholder="Scrie ceva despre tine..."></textarea>
+                <button class="btn" style="margin-top: 15px;" id="saveProfile">Salvează profilul</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <header>
+        <div class="top-bar">
+            <div class="logo-container" id="homeLink">
+                <div class="logo">CE</div>
+                <div>
+                    <div class="school-name">Colegiul UTM</div>
+                    <div>Consiliul Elevilor</div>
+                </div>
+            </div>
+            <div class="controls">
+                <select class="language-selector" id="languageSelector">
+                    <option value="ro">RO</option>
+                    <option value="ru">RU</option>
+                    <option value="en">EN</option>
+                </select>
+                <button class="control-btn" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="control-btn" id="userMenu">
+                    <i class="fas fa-user"></i>
+                </button>
+                <div id="userProfileContainer" style="display: none;">
+                    <div class="user-profile" id="userProfile">
+                        <div class="user-avatar" id="userAvatar">U</div>
+                        <div class="user-name" id="userName">Utilizator</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <nav>
+            <a href="index.html" class="active">Acasă</a>
+            <a href="#">Despre Consiliu</a>
+            <a href="#">Membrii</a>
+            <a href="#">Orarul</a>
+            <a href="#">Proiecte</a>
+            <a href="#">Anunțuri</a>
+            <a href="#">Regulament</a>
+            <a href="#">Galerie</a>
+            <a href="#">Contacte</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="welcome-section">
+            <h1>Bine ai venit pe platforma Consiliului Elevilor!</h1>
+            <p>Consiliul Elevilor reprezintă vocea elevilor din Colegiul UTM. Aici vei găsi toate informațiile despre activitățile, proiectele și evenimentele organizate de către consiliu.</p>
+            <a href="#" class="btn">Vezi proiectele noastre</a>
+        </div>
+        
+        <h2 class="section-title">De ce să ni te alături?</h2>
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Comunitate</h3>
+                <p>Fă parte dintr-o comunitate activă de elevi pasionați, implică-te în proiecte și creează legături valoroase.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3>Dezvoltare</h3>
+                <p>Dezvoltă-ți abilitățile de lider, organizare și lucru în echipă prin participarea la activitățile consiliului.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h3>Evenimente</h3>
+                <p>Participă la evenimente unice, workshop-uri educative și activități recreative organizate special pentru tine.</p>
+            </div>
+        </div>
+        
+        <div class="events-section">
+            <h2 class="section-title">Evenimente recente</h2>
+            <div class="events-grid">
+                <div class="event-card">
+                    <div class="event-image">
+                        <div class="event-date">15 Oct, 2023</div>
+                    </div>
+                    <div class="event-content">
+                        <h3>Ziua Colegiului</h3>
+                        <p>Festival anual cu concerte, expoziții și activități interactive pentru toți elevii.</p>
+                        <div class="event-stats">
+                            <button class="like-btn" id="event1Like">
+                                <i class="far fa-heart"></i>
+                                <span>24</span>
+                            </button>
+                            <button class="comments-btn">
+                                <i class="far fa-comment"></i>
+                                <span>8</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-image">
+                        <div class="event-date">28 Sep, 2023</div>
+                    </div>
+                    <div class="event-content">
+                        <h3>Workshop de Programare</h3>
+                        <p>Sesiune practică de învățare a noilor tehnologii în domeniul IT.</p>
+                        <div class="event-stats">
+                            <button class="like-btn" id="event2Like">
+                                <i class="far fa-heart"></i>
+                                <span>37</span>
+                            </button>
+                            <button class="comments-btn">
+                                <i class="far fa-comment"></i>
+                                <span>12</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-image">
+                        <div class="event-date">5 Oct, 2023</div>
+                    </div>
+                    <div class="event-content">
+                        <h3>Campanie Ecologică</h3>
+                        <p>Acțiune de curățare a parcului din fața colegiului și plantare de copaci.</p>
+                        <div class="event-stats">
+                            <button class="like-btn" id="event3Like">
+                                <i class="far fa-heart"></i>
+                                <span>42</span>
+                            </button>
+                            <button class="comments-btn">
+                                <i class="far fa-comment"></i>
+                                <span>15</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="members-section">
+            <h2 class="section-title">Membrii Consiliului</h2>
+            <div class="members-grid">
+                <div class="member-card">
+                    <div class="member-img">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="member-info">
+                        <h3>Livia Luchian</h3>
+                        <p>Președinta</p>
+                        <p>UTiA-211</p>
+                    </div>
+                </div>
+                
+                <div class="member-card">
+                    <div class="member-img">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="member-info">
+                        <h3>Chiosa Alexsandra</h3>
+                        <p>Vicepreședinta</p>
+                        <p>TA-231</p>
+                    </div>
+                </div>
+                
+                <div class="member-card">
+                    <div class="member-img">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="member-info">
+                        <h3>Morari Marcel</h3>
+                        <p>Secretar</p>
+                        <p>TRT-241</p>
+                    </div>
+                </div>
+                
+                <div class="member-card">
+                    <div class="member-img">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="member-info">
+                        <h3>Siminel Vadim</h3>
+                        <p>Cordonator</p>
+                        <p>Cadru Dedactic</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Despre noi</h3>
+                <p>Consiliul Elevilor din Colegiul UTM reprezintă interesele tuturor elevilor și promovează valori precum respectul, responsabilitatea și implicarea civică.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contacte</h3>
+                <ul class="contact-list">
+                    <li>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Str. Studenților 9, Chișinău</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-phone"></i>
+                        <span>+373 22 123 456</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-envelope"></i>
+                        <span>consiliu@cutm.md</span>
+                    </li>
+                </ul>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Link-uri utile</h3>
+                <ul class="contact-list">
+                    <li><i class="fas fa-chevron-right"></i> <a href="#">Regulament Consiliu</a></li>
+                    <li><i class="fas fa-chevron-right"></i> <a href="#">Calendar activități</a></li>
+                    <li><i class="fas fa-chevron-right"></i> <a href="#">Documente oficiale</a></li>
+                    <li><i class="fas fa-chevron-right"></i> <a href="#">Formular de contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Consiliul Elevilor CUTM. Toate drepturile rezervate.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
